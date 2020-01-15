@@ -1,0 +1,102 @@
+/*--------------------------------------------------------------
+ Media queries
+     --------------------------------------------------------------*/
+@media(min-width:1680px) {
+
+}
+@media(min-width:1366px) {
+    .container{
+        width: 1140px;
+    }
+
+}
+
+@media(max-width:1124px) {
+
+}
+@media(max-width:1024px) {
+
+
+}
+@media(max-width:991px){
+ 
+}
+@media (max-device-width: 812px) and (orientation: landscape) , (max-width: 767px){
+    .box {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    header{
+        height: 60px;
+    }
+    .logo{
+        margin: 5px auto;
+        width:50%;
+    }
+   
+   h1,
+    .title_h1{
+         font-size: 2.5em;
+        text-align: center;
+    }
+    h2, .title_h2 {
+        font-size: 2em;
+        text-align: center;
+    }
+    #home{
+        min-height: 300px;
+    }
+     #testimonials{
+         min-height: 500px;
+    }
+}
+@media(max-width:767px){
+
+
+  .box{
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+    .navbar-collapse{
+        right: 0;
+        top: 80px;
+        background: #fff;
+        padding: 20px;
+        position: absolute;
+    }
+}
+@media(max-width:736px) {
+	#main-section{
+	min-height: 700px;
+	}
+	
+
+}
+@media(max-width:520px){
+
+}
+@media(max-width:635px){
+
+}
+
+@media(max-width:480px){
+  
+}
+@media(max-width:414px){
+
+}
+@media(max-width:400px){
+
+ 
+}
+@media(max-width:375px){
+  
+}
+
+
+@media (max-width: 320px) {
+    .container {
+        width: 100%;
+    }
+
+}
