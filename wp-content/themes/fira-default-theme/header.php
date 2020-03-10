@@ -4,6 +4,7 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="<?php echo get_template_directory_uri()?>/images/favicon.ico" rel="icon" type="image/x-icon" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <!--	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>-->
 	<?php wp_head();?>
 
