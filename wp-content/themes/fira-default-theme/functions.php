@@ -2,7 +2,7 @@
 /**
  * Setup main theme options
  */
- show_admin_bar(false);
+show_admin_bar(false);
 add_action('after_setup_theme', 'fira_theme_setup');
 function fira_theme_setup()
 {
@@ -74,7 +74,7 @@ function fira_add_image_sizes()
 //}
 add_filter('wpcf7_ajax_loader', 'my_wpcf7_ajax_loader');
 function my_wpcf7_ajax_loader () {
-return  get_bloginfo('stylesheet_directory') . '/images/ajax-loader.gif';
+    return  get_bloginfo('stylesheet_directory') . '/images/ajax-loader.gif';
 }
 /**
  * Allow upload svg
@@ -87,10 +87,6 @@ function fira_mime_types($mimes)
 }
 
 add_filter('upload_mimes', 'fira_mime_types');
-
-add_filter('acf/settings/google_api_key', function () {
-    return get_field('theme_options_google_maps','option');
-});
 /**
  * Register sidebar
  */
@@ -111,24 +107,50 @@ function fira_widgets_init()
         'before_title' => '<h3 class="title text-center">',
         'after_title' => '</h3>'
     ));
+    register_sidebar(
+        array(
+            'name'          => __( 'Footer 1', 'fira' ),
+            'id'            => 'sidebar-1',
+            'description'   => __( 'Add widgets here to appear in your footer.', 'fira' ),
+            'before_widget' => '<section id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</section>',
+            'before_title'  => '<h4 class="mb-4">',
+            'after_title'   => '</h4>',
+        )
+    );
+    register_sidebar(
+        array(
+            'name'          => __( 'Footer 2', 'fira' ),
+            'id'            => 'sidebar-2',
+            'description'   => __( 'Add widgets here to appear in your footer.', 'fira' ),
+            'before_widget' => '<section id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</section>',
+            'before_title'  => '<h4 class="mb-4">',
+            'after_title'   => '</h4>',
+        )
+    );
 }
 // удаляет H2 из шаблона пагинации
 add_filter('navigation_markup_template', 'my_navigation_template', 10, 2 );
 function my_navigation_template( $template, $class ){
-	/*
-	Вид базового шаблона:
-	<nav class="navigation %1$s" role="navigation">
-		<h2 class="screen-reader-text">%2$s</h2>
-		<div class="nav-links">%3$s</div>
-	</nav>
-	*/
+    /*
+    Вид базового шаблона:
+    <nav class="navigation %1$s" role="navigation">
+        <h2 class="screen-reader-text">%2$s</h2>
+        <div class="nav-links">%3$s</div>
+    </nav>
+    */
 
-	return '
+    return '
 	<nav class="navigation %1$s" role="navigation">
 		<div class="nav-links">%3$s</div>
 	</nav>    
 	';
 }
+
+add_filter('acf/settings/google_api_key', function () {
+    return get_field('theme_options_google_maps','option');
+});
 /**
  * Load Scripts
  */
@@ -148,7 +170,10 @@ function fira_scripts()
             wp_enqueue_script('bootstrap-js', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), null, true );
         }
     }else{
-        wp_enqueue_style('normalize-css', get_template_directory_uri().'/css/normalize.css', false, '');
+        wp_enqueue_style('bootstrap-css', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', false, '');
+        wp_enqueue_script('jquery-ajax-js', 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js', array('jquery'), null, true );
+        wp_enqueue_script('popper-js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array('jquery'), null, true );
+        wp_enqueue_script('bootstrap-js', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), null, true );
     }
 
     wp_enqueue_style('animate-css', get_template_directory_uri().'/css/animate.css', false, '');
@@ -172,12 +197,14 @@ function fira_scripts()
         wp_enqueue_script('slick-js', get_template_directory_uri().'/js/slick.min.js', array('jquery'), null, true );
     }
 
+
+
     /* Google Maps API for ACF */
     if(function_exists('acf_add_options_page') && get_field('theme_options_google_maps','option') && is_singular()){
         wp_enqueue_script( 'google-map', 'https://maps.googleapis.com/maps/api/js?key='.get_field('theme_options_google_maps','option').'&v=3.exp', array(), '3', true );
         wp_enqueue_script( 'google-map-init', get_template_directory_uri() . '/js/google-maps-init.js', array('google-map', 'jquery'), '0.1', true );
 //        wp_enqueue_script( 'google-map', 'https://maps.googleapis.com/maps/api/js?v=3&sensor=false');
-        wp_localize_script( 'google-map-init', 'marker_img',  get_template_directory_uri().'/images/icon-map.png');
+        wp_localize_script( 'google-map-init', 'marker_img',  get_template_directory_uri().'/images/marker.png');
     }
 
     /* Qwl Slider */
@@ -194,9 +221,11 @@ function fira_scripts()
 
     wp_enqueue_style('fontawesome', '//use.fontawesome.com/releases/v5.8.2/css/all.css', false, '');
     wp_enqueue_style('animate', '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css', false, '');
-    wp_enqueue_style('font-opensans','//fonts.googleapis.com/css?family=Open+Sans:300,400,700,800', false, '');
-     wp_enqueue_style('font-roboto','//fonts.googleapis.com/css?family=Roboto:300,400,700,800', false, '');
+    wp_enqueue_style('font-opensans','//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&subset=cyrillic-ext', false, '');
+    wp_enqueue_style('font-sans','//fonts.googleapis.com/css?family=Montserrat+Alternates:300,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic-ext', false, '');
+    wp_enqueue_style('font-Montserrat','//fonts.googleapis.com/css?family=Montserrat:300,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic-ext', false, '');
 
+    wp_enqueue_style('custom-slider', get_template_directory_uri() . '/css/slider.css', false, '');
     if (is_404()) {
         wp_enqueue_style('not-found', get_template_directory_uri() . '/css/not-found-page.css', false, '');
     }
@@ -205,13 +234,13 @@ function fira_scripts()
     wp_enqueue_script('popup-js', get_template_directory_uri() . '/js/jquery.magnific-popup.min.js', array('jquery'), null, true);
     wp_enqueue_script('mask-js', get_template_directory_uri() . '/js/jquery.maskedinput.min.js', array('jquery'), null, false);
 
-      /* Theme */
+    /* Theme */
     wp_enqueue_style('fira', get_stylesheet_uri(), false, '');
     wp_enqueue_style('responsive', get_template_directory_uri() . '/css/responsive.css', false, '');
- 
+
     wp_enqueue_script('fira-js', get_template_directory_uri() . '/js/fira.js', array('jquery'), null, true);
 
-  // Load contact form style
+    // Load contact form style
     wp_enqueue_style('contact-form-style', get_template_directory_uri() . '/css/contact-form.css', array(), '20170101');
 // Load contact form js
     wp_enqueue_script('contact-form-js', get_template_directory_uri() . '/js/contact-form.js', array(), '20170101', true);
@@ -231,33 +260,12 @@ if(function_exists('acf_add_options_page') && get_field('theme_options_google_ma
     }
 }
 
-# удалить атрибут type у scripts и styles
-add_filter('style_loader_tag', 'sj_remove_type_attr', 10, 2);
-add_filter('script_loader_tag', 'sj_remove_type_attr', 10, 2);
-function sj_remove_type_attr($tag) {
-    return preg_replace( "/type=['\"]text\/(javascript|css)['\"]/", '', $tag );
-}
-add_filter('style_loader_tag', 'clean_style_tag');
-function clean_style_tag($src) {
-    return str_replace('type="text/css"', '', $src);
-}
-add_filter('script_loader_tag', 'clean_script_tag');
-function clean_script_tag($src) {
-    return str_replace("type='text/javascript'", '', $src);
-}
 
 
 /**
  * Add options page
  */
 if( function_exists('acf_add_options_page') ) {
-//    acf_add_options_page(array(
-//        'page_title' 	=> __('Настройки темы','toyota'),
-//        'menu_title'	=> __('Настройки темы','toyota'),
-//        'menu_slug' 	=> 'toyota-theme-settings',
-//        'capability'	=> 'edit_posts',
-//        'redirect'		=> false
-//    ));
 
     acf_add_options_sub_page(array(
         'page_title' 	=> __('Разработчикам','fira'),
@@ -269,12 +277,17 @@ if( function_exists('acf_add_options_page') ) {
 /**
  * Edit Main Loop
  */
-add_filter('pre_get_posts', 'fira_posts');
-function fira_posts($query)
-{
-    if (!is_admin() && !is_single()) {
+
+function add_custom_types_to_tax( $query ) {
+    if( is_category() || is_tag() && empty( $query->query_vars['suppress_filters'] ) ) {
+// Get all your post types
+        $post_types = get_post_types();
+
+        $query->set( 'post_type', $post_types );
+        return $query;
     }
 }
+add_filter( 'pre_get_posts', 'add_custom_types_to_tax' );
 
 /**
  * Edit Custom Post Type archive title
@@ -290,6 +303,10 @@ add_filter('get_the_archive_title', function ($title) {
     }
     if (is_tax()) {
         $title = single_term_title('', false);
+        return $title;
+    }
+    if (is_tag()) {
+        $title = single_tag_title('', false);
         return $title;
     }
 });
@@ -343,7 +360,21 @@ function get_image_sizes()
 
     return $sizes;
 }
-
+# удалить атрибут type у scripts и styles
+add_filter('style_loader_tag', 'sj_remove_type_attr', 10, 2);
+add_filter('script_loader_tag', 'sj_remove_type_attr', 10, 2);
+add_filter('wp_print_footer_scripts ', 'sj_remove_type_attr', 10, 2);
+function sj_remove_type_attr($tag) {
+    return preg_replace( "/type=['\"]text\/(javascript|css)['\"]/", '', $tag );
+}
+add_filter('style_loader_tag', 'clean_style_tag');
+function clean_style_tag($src) {
+    return str_replace('type="text/css"', '', $src);
+}
+add_filter('script_loader_tag', 'clean_script_tag');
+function clean_script_tag($src) {
+    return str_replace("type='text/javascript'", '', $src);
+}
 /**
  * Get size information for a specific image size.
  */
@@ -356,349 +387,79 @@ function get_image_size($size)
     }
     return false;
 }
+add_filter('autoptimize_filter_imgopt_lazyloaded_img','sizes_experiment');
+function sizes_experiment($img_in) {
+    $noscript_pos = strpos( $img_in, '</noscript>') + 11;
+    $noscript_img = substr ( $img_in , 0 , $noscript_pos );
+    $_img = substr ( $img_in , $noscript_pos );
+    return $noscript_img . str_replace( 'sizes=', 'data-sizes=', $_img );
+}
+/**
+ * Custom template tags for this theme.
+ */
+require get_parent_theme_file_path( '/inc/template-tags.php' );
 
-function fira_customize_register($wp_customize)
-{
+/**
+ * Additional features to allow styling of the templates.
+ */
+require get_parent_theme_file_path( '/inc/template-functions.php' );
 
-    $fira_transport = 'postMessage';
+/**
+ * Customizer additions.
+ */
+require get_parent_theme_file_path( '/inc/customizer.php' );
 
+function load_more_scripts() {
 
-    $wp_customize->add_section(
-        'fira_advanced_options',
-        array(
-            'title' => 'Header',
-            'priority' => 21
-        )
-    );
+    global $wp_query;
 
+    // In most cases it is already included on the page and this line can be removed
+    wp_enqueue_script('jquery');
 
-    $wp_customize->add_setting(
-        'fira_header_logo',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
+    // register our main script but do not enqueue it yet
+    wp_register_script( 'my_loadmore', get_stylesheet_directory_uri() . '/js/myloadmore.js', array('jquery') );
 
-    $wp_customize->add_control(
-        new WP_Customize_Image_Control(
-            $wp_customize,
-            'fira_header_logo',
-            array(
-                'label' => 'Логотип',
-                'settings' => 'fira_header_logo',
-                'section' => 'fira_advanced_options'
-            )
-        )
-    );
-        $wp_customize->add_setting(
-        'fira_header_button_url',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
+    // now the most interesting part
+    // we have to pass parameters to myloadmore.js script but we can get the parameters values only in PHP
+    // you can define variables directly in your HTML but I decided that the most proper way is wp_localize_script()
+    wp_localize_script( 'my_loadmore', 'loadmore_params', array(
+        'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
+        'posts' => json_encode( $wp_query->query_vars ), // everything about your loop is here
+        'current_page' => get_query_var( 'paged' ) ? get_query_var('paged') : 1,
+        'max_page' => $wp_query->max_num_pages,
+//        'post_type' => get_post_type()
+    ) );
 
-    $wp_customize->add_control(
-            'fira_header_button_url',
-            array(
-                'label' => 'Ссылка кнопки в шапке',
-                'type' => 'text',
-                'section' => 'fira_advanced_options'
-            
-        )
-    );
-   $wp_customize->add_setting(
-        'fira_header_button',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
-
-    $wp_customize->add_control(
-            'fira_header_button',
-            array(
-                'label' => 'Текст кнопки в шапке',
-                'type' => 'text',
-                'section' => 'fira_advanced_options'
-            
-        )
-    );
-    
-    $wp_customize->add_setting(
-        'fira_footer_logo',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
-
-    $wp_customize->add_control(
-        new WP_Customize_Image_Control(
-            $wp_customize,
-            'fira_footer_logo',
-            array(
-                'label' => 'Логотип footer',
-                'settings' => 'fira_footer_logo',
-                'section' => 'fira_advanced_options'
-            )
-        )
-    );
- 
-// Добавляем собственную секцию настроек цвета
-    $wp_customize->add_section(
-        'fira_color_options',
-        array(
-            'title' => 'Цвета',
-            'priority' => 22
-        )
-    );
-
-// Добавляем выбор главного цвета
-    $wp_customize->add_setting(
-        'fira_main_color',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            'fira_main_color', array(
-            'label' => 'Главный цвет',
-            'settings' => 'fira_main_color',
-            'section' => 'fira_color_options',
-            'priority' => 1
-        )));
-    // Добавляем выбор дополнительного цвета
-    $wp_customize->add_setting(
-        'fira_second_color',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
-
-    $wp_customize->add_control(
-        new WP_Customize_Color_Control(
-            $wp_customize,
-            'fira_second_color', array(
-            'label' => 'Дополнительный цвет',
-            'settings' => 'fira_second_color',
-            'section' => 'fira_color_options',
-            'priority' => 2
-        )));
-
-// Добавляем собственную секцию настроек
-    $wp_customize->add_section(
-        'fira_footer_options',
-        array(
-            'title' => 'Footer',
-            'priority' => 202,
-            'description' => 'Customize the view of your footer'
-        )
-    );
-    // Текст копирайта в футере
-    $wp_customize->add_setting(
-        'fira_footer_copyright_text',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
-    $wp_customize->add_control(
-        'fira_footer_copyright_text',
-        array(
-            'section' => 'fira_footer_options',
-            'label' => 'Copyright',
-            'type' => 'text'
-        )
-    );
-    // Адрес в футере
-    $wp_customize->add_setting(
-        'fira_footer_address',
-        array(
-            'default' => '',
-            'transport' => $fira_transport
-        )
-    );
-    $wp_customize->add_control(
-        'fira_footer_address',
-        array(
-            'section' => 'fira_footer_options',
-            'label' => 'Адрес',
-            'type' => 'text'
-        )
-    );
-
-   
+    wp_enqueue_script( 'my_loadmore' );
 }
 
-add_action('customize_register', 'fira_customize_register');
+add_action( 'wp_enqueue_scripts', 'load_more_scripts' );
 
-function true_customizer_css()
-{
-    echo '<style>';
+function loadmore_ajax_handler(){
 
-    //загружаем фон
-//	if ( 0 < count( strlen( ( $background_image_url = get_theme_mod( 'fira_background_image' ) ) ) ) ){
-//    		echo 'background-image: url( \'' . $background_image_url . '\' );';
-//	}
-//	echo '}';
-
-
-    echo '</style>';
-   //  if(is_front_page()){
-   //  echo '<script>';
-   //   echo 'jQuery(document).ready(function ($) {
-   //      $("#menu-item-144 a,#menu-item-143 a").addClass("scroll");
-   //      $("#menu-item-144 a").attr("href", "#features");
-   //      $("#menu-item-143 a").attr("href", "#pricing");
-   //  });';
-   //  echo '</script>';
-   // } 
+    // prepare our arguments for the query
+    $args = json_decode( stripslashes( $_POST['query'] ), true );
+    $args['paged'] = $_POST['page'] + 1; // we need next page to be loaded
+    $args['post_status'] = 'publish';
+//    $args['post_type'] = $_POST['post_type'];
+    // it is always better to use WP_Query but not here
+    query_posts( $args );
+    if( have_posts() ) :?>
+        <?php  while ( have_posts() ) :  the_post(); ?>
+            <article class="box-shadow">
+                <a href="<?php the_permalink();?>" rel="nofollow" ><?php the_post_thumbnail();?></a>
+                <h2 class="subtitle"><?php the_title();?></h2>  <span class="entry-meta"><?php fira_edit_link();?></span>
+                <p><?php echo wp_trim_words( strip_shortcodes(get_the_content()), 20, '...' );?></p>
+                <div class="text-right">
+                    <a href="<?php the_permalink();?>" rel="nofollow"  class="btn"><?php _e('Детальніше','fira');?></a>
+                </div>
+                <div class="clearfix"></div>
+            </article>
+        <?php endwhile;?>
+    <?php endif;
+    die; // here we exit the script and even no wp_reset_query() required!
 }
 
-add_action('wp_head', 'true_customizer_css');
+add_action('wp_ajax_loadmore', 'loadmore_ajax_handler'); // wp_ajax_{action}
+add_action('wp_ajax_nopriv_loadmore', 'loadmore_ajax_handler'); // wp_ajax_nopriv_{action}
 
-//произвольный тип записи для писем лидов
-
-add_action( 'init', 'cpt_mail_calback' );
-
-function cpt_mail_calback()
-{
-
-    $labels = array(
-        "name" => "Mail",
-        "singular_name" => "Mail",
-        "menu_name" => "Mail",
-        "all_items" => "All mail",
-        "add_new" => "Add New",
-        "add_new_item" => "Add New",
-        "edit" => "Edit",
-        "edit_item" => "Edit",
-        "new_item" => "New item",
-        "view" => "View",
-        "view_item" => "View item",
-        "search_items" => "Search item",
-        "not_found" => "No found",
-        "not_found_in_trash" => "No found",
-    );
-
-    $args = array(
-        "labels" => $labels,
-        "description" => "",
-        "public" => true,
-        "show_ui" => true,
-        "has_archive" => false,
-        "show_in_menu" => true,
-        "exclude_from_search" => true,
-        "capability_type" => "post",
-        "map_meta_cap" => true,
-        "hierarchical" => true,
-        "rewrite" => false,
-        "query_var" => true,
-        "menu_position" => 7,
-        "menu_icon" => "dashicons-email-alt",
-        "supports" => array("title", "editor"),
-    );
-
-    register_post_type("mail", $args);
-}
-
-//Заменяем имя отправителя
-    function fira_mail_name( $email ){
-        return get_site_url();
-    }
-    add_filter( 'wp_mail_from_name', 'fira_mail_name' );
-
-//    Заменяем email отправителя
-
-
-    function fira_mail_from ($email ){
-        return 'info@'.get_site_url();
-    }
-    add_filter( 'wp_mail_from', 'fira_mail_from' );
-
-
-//    функция отправки письма
-    function send_mail() {
-
-        /* Забираем отправленные данные */
-        $client_fio = $_POST['client_fio'];
-        $client_tel = $_POST['client_tel'];
-        $client_mail = $_POST['client_mail'];
-        $client_sum = $_POST['client_sum'];
-
-        /* Отправляем нам письмо */
-        $emailTo = 'fira.gcgtrust@gmail.com';
-        $subject = 'Test mail рассылки!';
-        $headers = "Content-type: text/html; charset=\"utf-8\"";
-        $mailBody = "$client_fio <br/><br/> $client_tel <br/><br/> $client_mail <br/><br/> $client_sum";
-
-        wp_mail($emailTo, $subject, $mailBody, $headers);
-
-        /* Создаем новый пост-письмо */
-        $post_data = array(
-            'post_title'    => $client_fio,
-            'post_content'  => $client_tel . '<br/>' .$client_mail . '<br/>' .$client_sum,
-            'post_status'   => 'publish',
-            'post_author'   => 1,
-            'post_type' => 'mail',
-        );
-
-        wp_insert_post( $post_data );
-
-        /* Завершаем выполнение ajax */
-        die();
-
-    }
-
-    add_action("wp_ajax_send_mail", "send_mail");
-    add_action("wp_ajax_nopriv_send_mail", "send_mail");
-
-    // Hide page by country
-    function getCountry($ip){
-
-        $url = "http://ipinfo.io/{$ip}?token=d6ced0cade3614";
-        $ch1 = curl_init($url);
-        curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1);
-        $content = curl_exec($ch1);
-        curl_close($ch1);
-        $info = json_decode( $content );
-        if(isset($info->country)){
-            $country = $info->country;
-        }else{
-            $country = 'BD';
-        }
-
-        $names        = file_get_contents( "http://country.io/names.json" );
-        $decrypt     = json_decode( $names );
-
-        $countryname = $decrypt->$country;
-
-        return $countryname;
-    }
-
-
-    add_action( 'template_redirect', function() {
-        global $country;
-        global $blacklist;
-        $country = getCountry($_SERVER['REMOTE_ADDR']);
-        $blacklist = [
-            'Bulgaria',
-            'Finland'
-        ];
-        if(in_array($country, $blacklist) && is_page('404')){
-            global $wp_query;
-            $wp_query->set_404();
-            status_header(404);
-            get_template_part( 404 ); exit();
-        }
-        else{
-
-        }
-    } );
