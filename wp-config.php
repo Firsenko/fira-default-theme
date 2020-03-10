@@ -44,6 +44,7 @@ define('FS_METHOD', 'direct');
 define( 'WP_MEMORY_LIMIT', '128M' );
 define( 'WP_MAX_MEMORY_LIMIT', '512M' );
 define('ALLOW_UNFILTERED_UPLOADS', true); // allow svg upload
+define( 'WPCF7_AUTOP', false );
 /**#@+
  * Уникальные ключи и соли для аутентификации.
  *
