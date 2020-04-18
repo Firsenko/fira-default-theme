@@ -33,7 +33,7 @@ Text Domain:
 	flex-direction:column;
 	height:100%;
 }
-.home .content{flex:1 0 auto;}
+
 .content {flex:1 0 auto;}
 .footer{flex:0 0 auto;}
 
@@ -84,9 +84,10 @@ video[poster]{
 }
 iframe{
 	width: 100%;
+	max-width:100%;
 }
 .blog article img{
-    width: 100%;
+    max-width: 100%;
     height: auto;
      margin:0 auto 20px;
 }
@@ -142,6 +143,9 @@ input:-ms-input-placeholder{
 input::-webkit-input-placeholder{
     color: #2b2b2b;
 }
+::placeholder{
+	color: #2b2b2b;
+}
 .navbar-default {
     background-color: transparent!important;
     border-color: transparent!important;
@@ -155,31 +159,83 @@ input::-webkit-input-placeholder{
 	background-color: #fff;
 	height: 4px;
 }
-
-.menu{
+#mainmenu ul,
+#mainmenu{
 	list-style-type: none;
 	display: table-row;
 	margin-bottom: 0;
 }
-.menu > li {
+#mainmenu > li {
 	width: auto;
 	display: table-cell;
 	text-align: center;
 }
-.menu > li > a{
+#mainmenu > li > a{
 	display: table-cell;
 	vertical-align: middle;
 	padding:0 10px;
+	height: 80px;
 	font-size: 16px;
 }
-.menu > li > a:visited,
-.menu > li > a{
-	color:#000;
+#mainmenu > li > a:visited,
+#mainmenu > li > a{
+	color:#fff;
 }
-.menu > li > a:hover,
-.menu > li > a:active,
-.menu > li > a:focus{
-	color:#64be7b;
+#mainmenu > li:last-child > a{
+	color:#8ac44b;
+	font-weight: 500;
+}
+#mainmenu > li > a:hover,
+#mainmenu > li > a:active,
+#mainmenu > li > a:focus{
+	color:#393857;
+	background: #edf2f9;
+}
+#mainmenu > li.menu-item-has-children > a{
+	position: relative;
+}
+#mainmenu > li.menu-item-has-children > a:after{
+	content: '';
+	background: url(images/angle-down-white.svg) no-repeat center;
+	width: 20px;
+	height: 7px;
+	display: inline-block;
+}
+#mainmenu > li.menu-item-has-children > a:focus:after,
+#mainmenu > li.menu-item-has-children > a:active:after,
+#mainmenu > li.menu-item-has-children > a:hover:after {
+	content: '';
+	background: url(images/angle-down-dark.svg) no-repeat center;
+}
+#mainmenu > li > ul.sub-menu {
+	display: none;
+	transition: all .8s linear;
+	position: absolute;
+	left: -10px;
+	padding: 16px 0;
+	background: #edf2f9;
+	text-align: left;
+	width: 100%;
+	max-width: 100%;
+	top: 80px;
+	z-index: 9;
+	box-shadow: 0 6px 21px 0 rgba(57,56,87,0.2);
+}
+#mainmenu > li:hover > ul.sub-menu {
+	display: block;
+}
+#mainmenu > li > ul.sub-menu a{
+	color: #393857;
+}
+#mainmenu > li > ul.sub-menu > li > a {
+	font-weight: 600;
+
+}
+#mainmenu > li > ul.sub-menu > li > ul {
+	display: block;
+	position: relative;
+	width: 100%;
+	padding: 10px 0;
 }
 .huge-header{
 	position: absolute;

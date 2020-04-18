@@ -32,6 +32,8 @@ get_header(); ?>
                     <div class="contact-wrap">
                         <?php echo do_shortcode( '[contact-form-7 id="'.get_field('contact_form').'"]');?>
                     </div>
+                <?php else:?>
+                    <?php get_template_part('inc/contact-form'); ?>
                 <?php endif;?>
             </div>
             <div class="col-md-offset-1 col-md-5 col-12">

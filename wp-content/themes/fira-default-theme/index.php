@@ -7,19 +7,21 @@ get_header(); ?>
 		<?php if ( have_posts() ) :?>
 			<?php while ( have_posts() ) : the_post();?>
 				<article <?php post_class('col-md-9 col-12'); ?>>
-					<?php the_post_thumbnail();?>
+                    <?php if( has_post_thumbnail() ): ?>
+                        <?php the_post_thumbnail('post-thumbnail' , array( 'class' => 'img-fluid'));?>
+                    <?php endif;?>
 					<?php the_content();?>
 				</article>
 			<?php endwhile;?>
 		<?php endif;?>
 		<?php if ( is_active_sidebar( 'right-sidebar-blog' ) ) : ?>
-	<aside class="col-md-3 col-12">
-	    <ul>
-	        <?php dynamic_sidebar('right-sidebar-blog');?>
-	    </ul>
-	</aside>
-	<?php endif;?>
+        <aside class="col-md-3 col-12">
+            <ul>
+                <?php dynamic_sidebar('right-sidebar-blog');?>
+            </ul>
+        </aside>
+        <?php endif;?>
 	</div>
-	</div>
+</div>
 </main>
 <?php get_footer(); ?>

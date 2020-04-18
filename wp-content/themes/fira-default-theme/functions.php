@@ -217,10 +217,15 @@ function fira_scripts()
     wp_enqueue_script( 'countdown-js', get_template_directory_uri() . '/js/countdown.min.js', array('jquery'), null, true );
     wp_enqueue_script( 'wow-js', get_template_directory_uri() . '/js/wow.min.js', array('jquery'), null, true );
     wp_enqueue_script( 'maskedinput-js', get_template_directory_uri() . '/js/jquery.maskedinput.min.js', array('jquery'), null, true );
+    wp_enqueue_script('parallax', get_template_directory_uri() . '/js/parallax.js', array('jquery'), null, false);
+    wp_enqueue_style( 'parallax-css', get_template_directory_uri() . '/css/parallax.css');
+
+    wp_enqueue_style( 'datetimepicker-css', get_template_directory_uri() . '/js/jquery.datetimepicker.min.css');
+    wp_enqueue_script('datetimepicker-js', get_template_directory_uri()."/js/jquery.datetimepicker.full.min.js", array('jquery'));
 
 
     wp_enqueue_style('fontawesome', '//use.fontawesome.com/releases/v5.8.2/css/all.css', false, '');
-    wp_enqueue_style('animate', '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css', false, '');
+    wp_enqueue_style('animate', '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css', false, '');
     wp_enqueue_style('font-opensans','//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&subset=cyrillic-ext', false, '');
     wp_enqueue_style('font-sans','//fonts.googleapis.com/css?family=Montserrat+Alternates:300,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic-ext', false, '');
     wp_enqueue_style('font-Montserrat','//fonts.googleapis.com/css?family=Montserrat:300,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic-ext', false, '');
@@ -260,8 +265,226 @@ if(function_exists('acf_add_options_page') && get_field('theme_options_google_ma
     }
 }
 
+//Breadcrubs
+
+if( !function_exists('fira_breadcrumbs') ){
+    function fira_breadcrumbs(){
+        global $fira_slugs;
+        $link_before      = '<span typeof="v:Breadcrumb">';
+        $link_after       = '</span>';
+        $link_attr        = ' rel="v:url" property="v:title"';
+        $link             = $link_before . '<a' . $link_attr . ' href="%1$s">%2$s</a>' . $link_after;
+        $delimiter        = '<span class="separator"></span>';              // Delimiter between crumbs
+        $before           = '<span class="current">'; // Tag before the current crumb
+        $after            = '</span>';
+        $page_on_front = get_option('page_on_front');
+        $breadcrumbs = '';
+        $wp_the_query   = $GLOBALS['wp_the_query'];
+        $queried_object = $wp_the_query->get_queried_object();
+        if( ( is_home() && empty( $page_on_front ) ) || is_front_page() ){
+            return $breadcrumbs;
+        }
+        else{
+            $breadcrumbs = '<ul class="list-unstyled breadcrumbs-list">';
+            $breadcrumbs .= '<li><a href="'.esc_url( home_url('/') ).'">'.__( 'Home', 'fira' ).'</a><span class="separator"></span></li>';
+            if( is_home() ){
+                $breadcrumbs .= '<li>'.get_the_title( get_option('page_for_posts') ).'</li>';
+            }
+            else if( is_404() ){
+                $breadcrumbs .= '<li>'.esc_html__( 'Not found', 'fira' ).'</li>';
+            }
+            else if( is_tax() ){
+                $term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
+
+// Create a list of all the term's parents
+                $parent = $term->parent;
+                while ($parent):
+                    $parents[] = $parent;
+                    $new_parent = get_term_by( 'id', $parent, get_query_var( 'taxonomy' ));
+                    $parent = $new_parent->parent;
+                endwhile;
+                if(!empty($parents)):
+                    $parents = array_reverse($parents);
+
+// For each parent, create a breadcrumb item
+                    foreach ($parents as $parent):
+                        $item = get_term_by( 'id', $parent, get_query_var( 'taxonomy' ));
+                        $url = get_bloginfo('url').'/'.$item->taxonomy.'/'.$item->slug;
+                        echo '<li><a href="'.$url.'">'.$item->name.'</a></li>';
+                    endforeach;
+                endif;
+
+// Display the current term in the breadcrumb
+                $breadcrumbs .= '<li>'.$term->name.'</li>';
+            }
+            else if( is_category() ){
+                $breadcrumbs .= '<li><a href="'.get_permalink( get_option('page_for_posts') ).'">'.get_the_title( get_option('page_for_posts') ).'</a><span class="separator"></span></li>';
+                $breadcrumbs .= '<li>'.single_cat_title(' ',false).'</li>';
+            }
+            else if( is_tag() ){
+                $breadcrumbs .= '<li><a href="'.get_permalink( get_option('page_for_posts') ).'">'.get_the_title( get_option('page_for_posts') ).'</a><span class="separator"></span></li>';
+                $breadcrumbs .= '<li>'.get_query_var('tag').'</li>';
+            }
+            else if( is_search() ){
+                $breadcrumbs .= '<li><a href="'.get_permalink( get_option('page_for_posts') ).'">'.get_the_title( get_option('page_for_posts') ).'</a><span class="separator"></span></li>';
+                $breadcrumbs .= '<li>'.esc_html__('Search results: ', 'fira').' '. get_search_query().'</li>';
+            }
+            // Handle single post requests which includes single pages, posts and attatchments
+            // Handle archives which includes category-, tag-, taxonomy-, date-, custom post type archives and author archives
+            else if( is_archive() ) {
+                if (    is_category() || is_tag()  || is_tax()  ) {
+                    // Set the variables for this section
+                    $term_object        = get_term( $queried_object );
+                    $taxonomy           = $term_object->taxonomy;
+                    $term_id            = $term_object->term_id;
+                    $term_name          = $term_object->name;
+                    $term_parent        = $term_object->parent;
+                    $taxonomy_object    = get_taxonomy( $taxonomy );
+                    $current_term_link  = $before . $taxonomy_object->labels->singular_name . ': ' . $term_name . $after;
+                    $parent_term_string = '';
+
+                    if ( 0 !== $term_parent )
+                    {
+                        // Get all the current term ancestors
+                        $parent_term_links = [];
+                        while ( $term_parent ) {
+                            $term = get_term( $term_parent, $taxonomy );
+
+                            $parent_term_links[] = sprintf( $link, esc_url( get_term_link( $term ) ), $term->name );
+
+                            $term_parent = $term->parent;
+                        }
+
+                        $parent_term_links  = array_reverse( $parent_term_links );
+                        $parent_term_string = implode( $delimiter, $parent_term_links );
+                    }
+
+                    if ( $parent_term_string ) {
+                        $breadcrumbs .= $parent_term_string . $delimiter . $current_term_link;
+                    } else {
+                        $breadcrumbs .= $current_term_link;
+                    }
+
+                } elseif ( is_author() ) {
+
+                    $breadcrumbs .=  __( 'Author archive for ') .  $before . $queried_object->data->display_name . $after;
+
+                } elseif ( is_date() ) {
+                    // Set default variables
+                    $year     = $wp_the_query->query_vars['year'];
+                    $monthnum = $wp_the_query->query_vars['month'];
+                    $day      = $wp_the_query->query_vars['day'];
+
+                    // Get the month name if $monthnum has a value
+                    if ( $monthnum ) {
+                        $date_time  = DateTime::createFromFormat( '!m', $monthnum );
+                        $month_name = $date_time->format( 'F' );
+                    }
+
+                    if ( is_year() ) {
+
+                        $breadcrumbs .= $before . $year . $after;
+
+                    } elseif( is_month() ) {
+
+                        $year_link        = sprintf( $link, esc_url( get_year_link( $year ) ), $year );
+
+                        $breadcrumbs .= $year_link . $delimiter . $before . $month_name . $after;
+
+                    } elseif( is_day() ) {
+
+                        $year_link        = sprintf( $link, esc_url( get_year_link( $year ) ),             $year       );
+                        $month_link       = sprintf( $link, esc_url( get_month_link( $year, $monthnum ) ), $month_name );
+
+                        $breadcrumbs .= $year_link . $delimiter . $month_link . $delimiter . $before . $day . $after;
+                    }
+
+                } elseif ( is_post_type_archive() ) {
+
+                    $post_type        = $wp_the_query->query_vars['post_type'];
+                    $post_type_object = get_post_type_object( $post_type );
+
+                    $breadcrumbs .= $before . $post_type_object->labels->name . $after;
+
+                }
+            }
+            else if ( is_singular() )
+            {
+                /**
+                 * Set our own $post variable. Do not use the global variable version due to
+                 * reliability. We will set $post_object variable to $GLOBALS['wp_the_query']
+                 */
+                $post_object = sanitize_post( $queried_object );
+
+                // Set variables
+                $title          = apply_filters( 'the_title', $post_object->post_title );
+                $parent         = $post_object->post_parent;
+                $post_type      = $post_object->post_type;
+                $post_id        = $post_object->ID;
+                $post_link      = $before . $title . $after;
+                $parent_string  = '';
+                $post_type_link = '';
+
+                if ( 'post' === $post_type )
+                {
+                    // Get the post categories
+                    $categories = get_the_category( $post_id );
+                    if ( $categories ) {
+                        // Lets grab the first category
+                        $category  = $categories[0];
+
+                        $category_links = get_category_parents( $category, true, $delimiter );
+                        $category_links = str_replace( '<a',   $link_before . '<a' . $link_attr, $category_links );
+                        $category_links = str_replace( '</a>', '</a>' . $link_after,             $category_links );
+                    }
+                }
+
+                if ( !in_array( $post_type, ['post', 'page', 'attachment'] ) )
+                {
+                    $post_type_object = get_post_type_object( $post_type );
+                    $archive_link     = esc_url( get_post_type_archive_link( $post_type ) );
+
+                    $post_type_link   = sprintf( $link, $archive_link, $post_type_object->labels->name );
+                }
+
+                // Get post parents if $parent !== 0
+                if ( 0 !== $parent )
+                {
+                    $parent_links = [];
+                    while ( $parent ) {
+                        $post_parent = get_post( $parent );
+
+                        $parent_links[] = sprintf( $link, esc_url( get_permalink( $post_parent->ID ) ), get_the_title( $post_parent->ID ) );
+
+                        $parent = $post_parent->post_parent;
+                    }
+
+                    $parent_links = array_reverse( $parent_links );
+
+                    $parent_string = implode( $delimiter, $parent_links );
+                }
+                if ( $category_links )  $breadcrumbs .= $category_links;
+                if ( $post_type_link )  $breadcrumbs .= $post_type_link . $delimiter;
+                // Lets build the breadcrumb trail
+                if ( $parent_string ) {
+                    $breadcrumbs .= $parent_string . $delimiter . $post_link;
+                } else {
+                    $breadcrumbs .= $post_link;
+                }
 
 
+            }
+
+            else{
+                $breadcrumbs .= '<li>'.get_the_title().'</li>';
+            }
+
+            $breadcrumbs .= '</ul>';
+        }
+
+        return $breadcrumbs;
+    }
+}
 /**
  * Add options page
  */
@@ -409,6 +632,31 @@ require get_parent_theme_file_path( '/inc/template-functions.php' );
  */
 require get_parent_theme_file_path( '/inc/customizer.php' );
 
+function fira_get_post_views($postID){
+    $count_key = 'fira_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        return "0 View";
+    }
+    return $count.' Views';
+}
+function fira_set_post_views($postID) {
+    $count_key = 'fira_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+}
+//To keep the count accurate, lets get rid of prefetching
+remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+
 function load_more_scripts() {
 
     global $wp_query;
@@ -449,7 +697,7 @@ function loadmore_ajax_handler(){
             <article class="box-shadow">
                 <a href="<?php the_permalink();?>" rel="nofollow" ><?php the_post_thumbnail();?></a>
                 <h2 class="subtitle"><?php the_title();?></h2>  <span class="entry-meta"><?php fira_edit_link();?></span>
-                <p><?php echo wp_trim_words( strip_shortcodes(get_the_content()), 20, '...' );?></p>
+                <p><?php echo wp_trim_words( strip_shortcodes(get_the_excerpt()), 20, '...' );?></p>
                 <div class="text-right">
                     <a href="<?php the_permalink();?>" rel="nofollow"  class="btn"><?php _e('Детальніше','fira');?></a>
                 </div>
@@ -463,3 +711,27 @@ function loadmore_ajax_handler(){
 add_action('wp_ajax_loadmore', 'loadmore_ajax_handler'); // wp_ajax_{action}
 add_action('wp_ajax_nopriv_loadmore', 'loadmore_ajax_handler'); // wp_ajax_nopriv_{action}
 
+function scroll_to_invalid() {
+    ?>
+    <script type="text/javascript">
+        document.addEventListener( 'wpcf7invalid', function( event ) {
+            setTimeout( function() {
+                if($(window).width() > 575) {
+                    $('html').stop().animate({
+                        scrollTop: $('.wpcf7-not-valid').offset().top,
+                    }, 500, 'swing');
+                    $('.wpcf7-not-valid').eq(0).focus();
+                }
+                else{
+                    $('html').stop().animate({
+                        scrollTop: $('.wpcf7-not-valid').eq(0).offset().top-50,
+                    }, 500, 'swing');
+                    $('.wpcf7-not-valid').eq(0).focus();
+                }
+            }, 100);
+        }, false );
+    </script>
+    <?php
+}
+
+add_action( 'wp_footer', 'scroll_to_invalid' );

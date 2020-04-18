@@ -66,13 +66,4 @@
 	</div>
  <?php endif;?>
 
-	<div id="contactus" class="wave">
-    	 <div class="container box">
-            <div class="row text-center">
-				<div class="col-md-12">
-					<?php get_template_part('inc/contact-form'); ?>
-	            </div>
-            </div>
-         </div>
-    </div>
     <?php get_footer(); ?>

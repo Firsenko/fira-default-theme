@@ -1,0 +1,157 @@
+.parallax {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.parallax-item {
+    -webkit-transition-timing-function: linear;
+    -o-transition-timing-function: linear;
+    transition-timing-function: linear;
+    -webkit-transition-duration: 0s;
+    -o-transition-duration: 0s;
+    transition-duration: 0s;
+    -webkit-transition-property: -webkit-transform;
+    transition-property: transform;
+    transition-property: transform,-webkit-transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    z-index: 2;
+}
+
+.part__bg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    -webkit-transition-timing-function: linear;
+    -o-transition-timing-function: linear;
+    transition-timing-function: linear;
+    -webkit-transition-duration: .1s;
+    -o-transition-duration: .1s;
+    transition-duration: .1s;
+    -webkit-transition-property: -webkit-transform;
+    transition-property: transform;
+    -webkit-transition-property: transform,-webkit-transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+.parallax-layer__1 {
+    /*width: 16rem;*/
+    /*height: 15rem;*/
+    width: 300px;
+    height: 230px;
+    left: -280px;
+    right: auto;
+    top: 0;
+    z-index: 9;
+}
+.parallax-layer__1 .part__bg {
+    background-image: url(images/graf1.svg);
+    background-size: 100%;
+}
+.parallax-layer__2 {
+    /*width: 15rem;*/
+    /*height: 7rem;*/
+    width: 250px;
+    height: 95px;
+    left: -300px;
+    right: auto;
+    bottom: 60px;
+    top: auto;
+}
+.parallax-layer__2 .part__bg {
+    background-image: url(images/graf2.svg);
+    background-size: 100%;
+}
+.parallax-layer__3 {
+    /*width: 7rem;*/
+    /*height: 5rem;*/
+    width: 81px;
+    height: 61px;
+    left: 10px;
+    right: auto;
+    bottom: 95px;
+    top: auto;
+}
+.parallax-layer__3 .part__bg {
+    background-image: url(images/graf3.svg);
+    background-size: 100%;
+}
+.parallax-layer__4 {
+    /*width: 15rem;*/
+    /*height: 7rem;*/
+    width: 290px;
+    height: 120px;
+    right: -270px;
+    left: auto;
+    bottom: auto;
+    top: 30px;
+    z-index: 4;
+}
+.parallax-layer__4 .part__bg {
+    background-image: url(images/graf4.svg);
+    background-size: 100%;
+}
+.parallax-layer__5{
+    /*width: 15rem;*/
+    /*height: 7rem;*/
+    width: 288px;
+    height: 190px;
+    right: -350px;
+    left: auto;
+    bottom: auto;
+    top: -70px;
+}
+.parallax-layer__5 .part__bg {
+    background-image: url(images/graf5.svg);
+    background-size: 100%;
+}
+.parallax-layer__6{
+    width: 120px;
+    height: 165px;
+    right: -100px;
+    left: auto;
+    bottom: 100px;
+    top: auto;
+}
+.parallax-layer__6 .part__bg {
+    background-image: url(images/graf6.svg);
+    background-size: 100%;
+}
+.parallax-layer__7{
+    /*width: 15rem;*/
+    /*height: 7rem;*/
+    width: 255px;
+    height: 85px;
+    right: -405px;
+    left: auto;
+    bottom: 180px;
+    top: auto;
+}
+.parallax-layer__7 .part__bg {
+    background-image: url(images/graf7.svg);
+    background-size: 100%;
+}
+.parallax-layer__8{
+    width: 110px;
+    height: 110px;
+    right: -260px;
+    left: auto;
+    bottom: 35px;
+    top: auto;
+}
+.parallax-layer__8 .part__bg {
+    background-image: url(images/graf8.svg);
+    background-size: 100%;
+}

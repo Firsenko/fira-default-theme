@@ -16,15 +16,15 @@
 							<div class="desc text-center">
 							    <?php if ( has_post_thumbnail() ) : ?>
                                     <?php
-                                    add_filter( 'wp_get_attachment_image_attributes', 'reviews_lazy_load_product_images');
-                                    the_post_thumbnail( 'reviews-box-thumb', array( 'class' => 'embed-responsive-item', 'sizes' => '(min-width: 414px) and (max-width: 768px) 768px, 360px' ) );
-                                    remove_filter( 'wp_get_attachment_image_attributes', 'reviews_lazy_load_product_images');
+                                    the_post_thumbnail( 'reviews-box-thumb', array( 'class' => 'img-fluid'));
                                     $post_id = get_the_ID();
                                     ?>
 							    <?php endif;?>
 								<?php the_content();?>
 							</div>
-					
+                            <?php if ( comments_open() || get_comments_number() ) :
+                                comments_template();
+                            endif; ?>
 						</article>
                     	<?php if ( is_active_sidebar( 'right-sidebar' ) ) : ?>
                     	<aside class="col-md-3 col-12">
