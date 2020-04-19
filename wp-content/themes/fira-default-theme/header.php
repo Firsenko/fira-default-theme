@@ -14,16 +14,14 @@
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-6">
-					<div class="site-branding">
-							<div class="site-title">
-							<?php if (!(get_theme_mod( 'fira_header_logo' ))): ?>
-							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
-						<?php else: ?>
-							<a href='<?php echo esc_url( home_url( '/' ) ); ?>' data-small-img="<?php echo esc_url( get_theme_mod( 'fira_header_small_logo' ) ); ?>" data-big-img="<?php echo esc_url( get_theme_mod( 'fira_header_logo' ) ); ?>">
-							<img class='main_logo' src="<?php echo esc_url( get_theme_mod( 'fira_header_logo' ) ); ?>"  alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" /></a>
-							<?php endif ?>
-							</div>
-						</div><!-- .site-branding -->
+                    <div class="site-branding" itemscope itemtype="http://schema.org/Organization">
+                        <?php if (!(get_theme_mod( 'fira_header_logo' ))): ?>
+                            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" itemprop="url" rel="home"><span itemprop="name"><?php bloginfo( 'name' ); ?></span></a>
+                        <?php else: ?>
+                            <a href='<?php echo esc_url( home_url( '/' ) ); ?>' itemprop="url" data-small-img="<?php echo esc_url( get_theme_mod( 'fira_header_small_logo' ) ); ?>" data-big-img="<?php echo esc_url( get_theme_mod( 'fira_header_logo' ) ); ?>">
+                                <img class='main_logo' src="<?php echo esc_url( get_theme_mod( 'fira_header_logo' ) ); ?>" itemprop="logo"  alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" /></a>
+                        <?php endif ?>
+                    </div><!-- .site-branding -->
 				</div>
 				<div class="col-6">
 				 <nav class="navbar navbar-expand-lg <?=( get_field('navbar_theme_dark') == true )? 'navbar-dark' : 'navbar-light' ;?>  justify-content-end">
@@ -50,4 +48,27 @@
 			</div>
 		</div>
 	</header>
+    <?php
+    $breadcrumbs = fira_breadcrumbs();
+    $breadcrumbs_on = false;
+    if( !empty( $breadcrumbs ) && $breadcrumbs_on == true ): ?>
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <?php echo  $breadcrumbs; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php else:?>
+    <?php
+    if ( function_exists('yoast_breadcrumb') && !is_front_page()) {
+        yoast_breadcrumb( '<div id="breadcrumbs" class="breadcrumbs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">','</div> </div> </div></div>' );
+    }
+    ?>
+    <?php endif; ?>
 	<main class="content <?php if(is_front_page()) echo 'bg-main';?>">

@@ -190,6 +190,139 @@
             "ui_off_text": ""
         },
         {
+            "key": "field_5e9c3e4ac090c",
+            "label": "Countdown.js",
+            "name": "theme_options_countdown",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5e9c3e9edd0c2",
+            "label": "Animate.css",
+            "name": "theme_options_animate",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5e9c3efcdd0c3",
+            "label": "wow.js",
+            "name": "theme_options_wow",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5e9c3f09dd0c4",
+            "label": "Parallax.js",
+            "name": "theme_options_parallax",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5e9c3f19dd0c5",
+            "label": "DateTimePicker for forms",
+            "name": "theme_options_datetimepicker",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5e9c3f59dd0c6",
+            "label": "Maskedinput.js",
+            "name": "theme_options_maskedinput",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5e9c3f68dd0c7",
+            "label": "Intltelinput.js",
+            "name": "theme_options_intltelinput",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_5b7eb82d19547",
             "label": "Bootstrap Version",
             "name": "theme_options_bootstrap_v",
@@ -227,7 +360,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "acf-options-razrabotchikam"
+                "value": "acf-options"
             }
         ]
     ],
@@ -239,5 +372,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1535541750
+    "modified": 1587298356
 }

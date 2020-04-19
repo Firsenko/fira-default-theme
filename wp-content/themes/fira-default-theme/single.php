@@ -25,6 +25,11 @@
                             <?php if ( comments_open() || get_comments_number() ) :
                                 comments_template();
                             endif; ?>
+                            <?php if ( 'post' === get_post_type()):?>
+                                <span class="entry-meta">
+                          <?=get_avatar( get_the_author_email(), '60' ); ?><span><?php the_author( );?></span><?=(get_the_author_meta( 'user_description', $post->post_author )) ? ', <span>'.get_the_author_meta( 'user_description', $post->post_author ).'</span>'  : '';?>
+                       </span>
+                            <?php endif;?>
 						</article>
                     	<?php if ( is_active_sidebar( 'right-sidebar' ) ) : ?>
                     	<aside class="col-md-3 col-12">

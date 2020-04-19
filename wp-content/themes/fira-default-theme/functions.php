@@ -21,6 +21,76 @@ function fira_theme_setup()
     // Enable support WooCommerce
     add_theme_support('woocommerce');
 
+    // Add support for Block Styles.
+    add_theme_support( 'wp-block-styles' );
+
+    // Add support for full and wide align images.
+    add_theme_support( 'align-wide' );
+// Add custom editor font sizes.
+    add_theme_support(
+        'editor-font-sizes',
+        array(
+            array(
+                'name'      => __( 'Small', 'fira' ),
+                'shortName' => __( 'S', 'fira' ),
+                'size'      => 19.5,
+                'slug'      => 'small',
+            ),
+            array(
+                'name'      => __( 'Normal', 'fira' ),
+                'shortName' => __( 'M', 'fira' ),
+                'size'      => 22,
+                'slug'      => 'normal',
+            ),
+            array(
+                'name'      => __( 'Large', 'fira' ),
+                'shortName' => __( 'L', 'fira' ),
+                'size'      => 36.5,
+                'slug'      => 'large',
+            ),
+            array(
+                'name'      => __( 'Huge', 'fira' ),
+                'shortName' => __( 'XL', 'fira' ),
+                'size'      => 49.5,
+                'slug'      => 'huge',
+            ),
+        )
+    );
+
+    // Editor color palette.
+    add_theme_support(
+        'editor-color-palette',
+        array(
+            array(
+                'name'  => 'default' === get_theme_mod( 'primary_color' ) ? __( 'Blue', 'fira' ) : null,
+                'slug'  => 'primary',
+                'color' => fira_hsl_hex( 'default' === get_theme_mod( 'primary_color' ) ? 199 : get_theme_mod( 'primary_color_hue', 199 ), 100, 33 ),
+            ),
+            array(
+                'name'  => 'default' === get_theme_mod( 'primary_color' ) ? __( 'Dark Blue', 'fira' ) : null,
+                'slug'  => 'secondary',
+                'color' => fira_hsl_hex( 'default' === get_theme_mod( 'primary_color' ) ? 199 : get_theme_mod( 'primary_color_hue', 199 ), 100, 23 ),
+            ),
+            array(
+                'name'  => __( 'Dark Gray', 'fira' ),
+                'slug'  => 'dark-gray',
+                'color' => '#111',
+            ),
+            array(
+                'name'  => __( 'Light Gray', 'fira' ),
+                'slug'  => 'light-gray',
+                'color' => '#767676',
+            ),
+            array(
+                'name'  => __( 'White', 'fira' ),
+                'slug'  => 'white',
+                'color' => '#FFF',
+            ),
+        )
+    );
+
+    // Add support for responsive embedded content.
+    add_theme_support( 'responsive-embeds' );
     // This theme uses wp_nav_menu() in two locations.
     register_nav_menus(array(
         'header' => __('Primary Menu', 'fira'),
@@ -176,8 +246,6 @@ function fira_scripts()
         wp_enqueue_script('bootstrap-js', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), null, true );
     }
 
-    wp_enqueue_style('animate-css', get_template_directory_uri().'/css/animate.css', false, '');
-
     /* Magnific Popup */
     if(function_exists('acf_add_options_page') && get_field('theme_options_magnific_popup','option')){
         wp_enqueue_script('magnific-popup-js', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js', array('jquery'), null, true );
@@ -197,8 +265,6 @@ function fira_scripts()
         wp_enqueue_script('slick-js', get_template_directory_uri().'/js/slick.min.js', array('jquery'), null, true );
     }
 
-
-
     /* Google Maps API for ACF */
     if(function_exists('acf_add_options_page') && get_field('theme_options_google_maps','option') && is_singular()){
         wp_enqueue_script( 'google-map', 'https://maps.googleapis.com/maps/api/js?key='.get_field('theme_options_google_maps','option').'&v=3.exp', array(), '3', true );
@@ -213,31 +279,42 @@ function fira_scripts()
         wp_enqueue_style('owl-theme', '//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css', false, '');
         wp_enqueue_script('owl-js', '//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js', array('jquery'), null, true);
     }
-
-    wp_enqueue_script( 'countdown-js', get_template_directory_uri() . '/js/countdown.min.js', array('jquery'), null, true );
-    wp_enqueue_script( 'wow-js', get_template_directory_uri() . '/js/wow.min.js', array('jquery'), null, true );
-    wp_enqueue_script( 'maskedinput-js', get_template_directory_uri() . '/js/jquery.maskedinput.min.js', array('jquery'), null, true );
-    wp_enqueue_script('parallax', get_template_directory_uri() . '/js/parallax.js', array('jquery'), null, false);
-    wp_enqueue_style( 'parallax-css', get_template_directory_uri() . '/css/parallax.css');
-
-    wp_enqueue_style( 'datetimepicker-css', get_template_directory_uri() . '/js/jquery.datetimepicker.min.css');
-    wp_enqueue_script('datetimepicker-js', get_template_directory_uri()."/js/jquery.datetimepicker.full.min.js", array('jquery'));
-
-
-    wp_enqueue_style('fontawesome', '//use.fontawesome.com/releases/v5.8.2/css/all.css', false, '');
-    wp_enqueue_style('animate', '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css', false, '');
+    if(function_exists('acf_add_options_page') && get_field('theme_options_countdown','option')) {
+        wp_enqueue_script('countdown-js', get_template_directory_uri() . '/js/countdown.min.js', array('jquery'), null, true);
+    }
+    if(function_exists('acf_add_options_page') && get_field('theme_options_animate','option')) {
+        wp_enqueue_style('animate', '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css', false, '');
+    }
+    if(function_exists('acf_add_options_page') && get_field('theme_options_wow','option')) {
+        wp_enqueue_script('wow-js', get_template_directory_uri() . '/js/wow.min.js', array('jquery'), null, true);
+    }
+    if(function_exists('acf_add_options_page') && get_field('theme_options_parallax','option')) {
+        wp_enqueue_script('parallax', get_template_directory_uri() . '/js/parallax.js', array('jquery'), null, false);
+        wp_enqueue_style('parallax-css', get_template_directory_uri() . '/css/parallax.css');
+    }
+    if(function_exists('acf_add_options_page') && get_field('theme_options_datetimepicker','option')) {
+        wp_enqueue_style('datetimepicker-css', get_template_directory_uri() . '/js/jquery.datetimepicker.min.css');
+        wp_enqueue_script('datetimepicker-js', get_template_directory_uri() . "/js/jquery.datetimepicker.full.min.js", array('jquery'));
+    }
+    if(function_exists('acf_add_options_page') && get_field('theme_options_awesome_fonts','option')) {
+        wp_enqueue_style('fontawesome', '//use.fontawesome.com/releases/v5.8.2/css/all.css', false, '');
+    }
+    if(function_exists('acf_add_options_page') && get_field('theme_options_maskedinput','option')) {
+        wp_enqueue_script('mask-js', get_template_directory_uri() . '/js/jquery.maskedinput.min.js', array('jquery'), null, false);
+    }
+//    theme_options_intltelinput
+    if(function_exists('acf_add_options_page') && get_field('theme_options_utils','option')) {
+        wp_enqueue_script('intltelinput-js', get_template_directory_uri() . '/js/intlTelInput.min.js', array('jquery'), null, false);
+        wp_enqueue_script('utils-js', get_template_directory_uri() . '/js/utils.js', array('jquery'), null, false);
+    }
     wp_enqueue_style('font-opensans','//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&subset=cyrillic-ext', false, '');
     wp_enqueue_style('font-sans','//fonts.googleapis.com/css?family=Montserrat+Alternates:300,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic-ext', false, '');
     wp_enqueue_style('font-Montserrat','//fonts.googleapis.com/css?family=Montserrat:300,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap&subset=cyrillic-ext', false, '');
 
-    wp_enqueue_style('custom-slider', get_template_directory_uri() . '/css/slider.css', false, '');
     if (is_404()) {
         wp_enqueue_style('not-found', get_template_directory_uri() . '/css/not-found-page.css', false, '');
     }
 
-    wp_enqueue_script('wow-js', get_template_directory_uri() . '/js/wow.min.js', array('jquery'), null, true);
-    wp_enqueue_script('popup-js', get_template_directory_uri() . '/js/jquery.magnific-popup.min.js', array('jquery'), null, true);
-    wp_enqueue_script('mask-js', get_template_directory_uri() . '/js/jquery.maskedinput.min.js', array('jquery'), null, false);
 
     /* Theme */
     wp_enqueue_style('fira', get_stylesheet_uri(), false, '');
@@ -267,16 +344,17 @@ if(function_exists('acf_add_options_page') && get_field('theme_options_google_ma
 
 //Breadcrubs
 
+
 if( !function_exists('fira_breadcrumbs') ){
     function fira_breadcrumbs(){
         global $fira_slugs;
-        $link_before      = '<span typeof="v:Breadcrumb">';
-        $link_after       = '</span>';
-        $link_attr        = ' rel="v:url" property="v:title"';
+        $link_before      = '<li>';
+        $link_after       = '</li>';
+        $link_attr        = ' ';
         $link             = $link_before . '<a' . $link_attr . ' href="%1$s">%2$s</a>' . $link_after;
         $delimiter        = '<span class="separator"></span>';              // Delimiter between crumbs
-        $before           = '<span class="current">'; // Tag before the current crumb
-        $after            = '</span>';
+        $before           = '<li class="current">'; // Tag before the current crumb
+        $after            = '</li>';
         $page_on_front = get_option('page_on_front');
         $breadcrumbs = '';
         $wp_the_query   = $GLOBALS['wp_the_query'];
@@ -307,13 +385,12 @@ if( !function_exists('fira_breadcrumbs') ){
                     $parents = array_reverse($parents);
 
 // For each parent, create a breadcrumb item
-                    foreach ($parents as $parent):
-                        $item = get_term_by( 'id', $parent, get_query_var( 'taxonomy' ));
-                        $url = get_bloginfo('url').'/'.$item->taxonomy.'/'.$item->slug;
-                        echo '<li><a href="'.$url.'">'.$item->name.'</a></li>';
-                    endforeach;
+                    $i=2; foreach ($parents as $parent):
+                    $item = get_term_by( 'id', $parent, get_query_var( 'taxonomy' ));
+                    $url = get_bloginfo('url').'/'.$item->taxonomy.'/'.$item->slug;
+                    echo '<li><a href="'.$url.'">'.$item->name.'</a> </li>';
+                    $i++;  endforeach;
                 endif;
-
 // Display the current term in the breadcrumb
                 $breadcrumbs .= '<li>'.$term->name.'</li>';
             }
@@ -326,8 +403,8 @@ if( !function_exists('fira_breadcrumbs') ){
                 $breadcrumbs .= '<li>'.get_query_var('tag').'</li>';
             }
             else if( is_search() ){
-                $breadcrumbs .= '<li><a href="'.get_permalink( get_option('page_for_posts') ).'">'.get_the_title( get_option('page_for_posts') ).'</a><span class="separator"></span></li>';
-                $breadcrumbs .= '<li>'.esc_html__('Search results: ', 'fira').' '. get_search_query().'</li>';
+                $breadcrumbs .= '<li><a href="'.get_permalink( get_option('page_for_posts') ).'"> '.get_the_title( get_option('page_for_posts') ).'</a><span class="separator"></span></li>';
+                $breadcrumbs .= '<li>'.esc_html__('Search results: ', 'fira').' '. get_search_query().'</span></li>';
             }
             // Handle single post requests which includes single pages, posts and attatchments
             // Handle archives which includes category-, tag-, taxonomy-, date-, custom post type archives and author archives
@@ -631,6 +708,11 @@ require get_parent_theme_file_path( '/inc/template-functions.php' );
  * Customizer additions.
  */
 require get_parent_theme_file_path( '/inc/customizer.php' );
+
+/**
+ * Customizer gutenberg.
+ */
+require get_template_directory() . '/inc/gutenberg.php';
 
 function fira_get_post_views($postID){
     $count_key = 'fira_post_views_count';

@@ -17,15 +17,26 @@
 	    </div>
 	</div>
 	<article class="faq">
-			<div class="faq-box container">
-			<?php while( have_rows('repeater_faq') ): the_row();?>
-			    <div class="row">
-					<div class="col-md-12 col--12">
-						<p class="subtitle"><?php the_sub_field('question');?></p>
-						<div class="answer"><?php the_sub_field('answer');?></div>
-					</div>
-			    </div>
-	    	<?php endwhile; ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="faq_box" itemscope="" itemtype="https://schema.org/FAQPage">
+                        <?php $i=1; while( have_rows('repeater_faq') ): the_row();?>
+                            <div id="question-<?=$i;?>" class="faq_question" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+                                <div class="faq_question__title" itemprop="name">
+                                    <h5><?php the_sub_field('question');?></h5>
+                                </div>
+                                <div class="faq_answer" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                    <div class="faq_answer__text" itemprop="text">
+                                        <?php the_sub_field('answer');?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php $i++; endwhile; ?>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
 	    </div>
     </article>
 	

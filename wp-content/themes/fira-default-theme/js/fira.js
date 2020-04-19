@@ -76,21 +76,25 @@ jQuery(document).ready(function($) {
         fixedContentPos: false
     });
     /* MASONRY ITEMS */
-    var $container = $('.masonry');
+
     // initialize
-    function start_masonry(){
-        $container.imagesLoaded(function() {
-            $container.masonry({
-                itemSelector: '.masonry-item',
-                columnWidth: '.masonry-item',
+    document.addEventListener( 'masonry', function( event ) {
+        var $container = $('.masonry');
+        function start_masonry() {
+            $container.imagesLoaded(function () {
+                $container.masonry({
+                    itemSelector: '.masonry-item',
+                    columnWidth: '.masonry-item',
+                });
             });
+        }
+
+        start_masonry();
+        $(window).resize(function () {
+            setTimeout(function () {
+                start_masonry();
+            }, 500);
         });
-    }
-    start_masonry();
-    $(window).resize(function(){
-        setTimeout( function(){
-            start_masonry();
-        }, 500);
     });
 
     $('#contact-form form').submit(function(e) {
